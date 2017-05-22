@@ -1,53 +1,47 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
 
 import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  MapView
 } from 'react-native';
 
-export default class weather extends Component {
-  render() {
+
+var weather = React.createClass({
+  getInitialState: function () {
+    return {
+      pin: {
+        latitude:0,
+        longitude:0
+      }
+    }
+  },
+  onRegionChangeComplete: function (region) {
+    this.setState({
+      pin: {
+        latitude:region.latitude,
+        longitude:region.longitude
+      }
+    })
+  },
+  render: function () {
+
+    var pins =[{
+      latitude: 37,
+      longitude: -95
+    }]
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
-    );
+      <MapView style={styles.map} annotations={[this.state.pin]} onRegionChangeComplete={this.onRegionChangeComplete}></MapView>
+    )
   }
-}
+})
 
 const styles = StyleSheet.create({
-  container: {
+  map: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  }
 });
 
 AppRegistry.registerComponent('weather', () => weather);
